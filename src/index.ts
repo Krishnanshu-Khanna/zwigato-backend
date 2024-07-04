@@ -4,6 +4,7 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import myUserRoutes from "./routes/MyUserRoute";
 import myRestaurantRoutes from "./routes/MyRestaurantRoute";
+import searchRestaurantRoutes from "./routes/SearchRestaurantRoute";
 import {v2 as cloudinary} from "cloudinary";
 
 mongoose
@@ -51,6 +52,7 @@ app.get("/health", async(req:Request, res:Response) => {
 
 app.use("/api/my/user", myUserRoutes);
 app.use("/api/my/restaurant", myRestaurantRoutes);
+app.use("/api/restaurant", searchRestaurantRoutes);
 
 app.listen(7000, () => {
 	console.log("Server is working fine at localhost:7000");
