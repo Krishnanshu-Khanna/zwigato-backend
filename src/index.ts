@@ -6,6 +6,8 @@ import myUserRoutes from "./routes/MyUserRoute";
 import myRestaurantRoutes from "./routes/MyRestaurantRoute";
 import searchRestaurantRoutes from "./routes/SearchRestaurantRoute";
 import {v2 as cloudinary} from "cloudinary";
+import orderRoutes from "./routes/OrderRoute";
+
 
 mongoose
 	.connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -18,8 +20,11 @@ cloudinary.config({
 })
 
 const app = express();
-app.use(express.json());
+
+
 app.use(cors());
+
+
 app.use((req, res, next) => {
 	const allowedOrigins = [
 		"https://zwigato-frontend.onrender.com",
@@ -46,6 +51,11 @@ app.use((req, res, next) => {
 });
 
 
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+
+app.use(express.json());
+
+
 app.get("/health", async(req:Request, res:Response) => {
 	res.send({ message: "Server is working fine health Ok!" });
 });
@@ -53,6 +63,7 @@ app.get("/health", async(req:Request, res:Response) => {
 app.use("/api/my/user", myUserRoutes);
 app.use("/api/my/restaurant", myRestaurantRoutes);
 app.use("/api/restaurant", searchRestaurantRoutes);
+app.use("/api/order", orderRoutes);
 
 app.listen(7000, () => {
 	console.log("Server is working fine at localhost:7000");
